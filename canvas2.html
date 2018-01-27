@@ -1,0 +1,151 @@
+<DOCTYPE HTML>
+  <html>
+  <head>
+    <style>
+    </style>
+    <title>pagina</title>
+  </head>
+  <body>
+     <canvas id="canvas1" ></canvas>
+     <div id="datos"></div>
+     <script>
+
+
+
+     var canvas=document.querySelector("#canvas1"),
+      datos=document.querySelector("#datos"),
+      ctx=canvas.getContext("2d"),
+      ancho=1000,
+      alto=500,
+      x=ancho/2,
+      y=alto/2
+      canvas.width=ancho
+      canvas.height=alto
+     var angulo=1,
+     xi=x,
+     yi=50,
+     ang=0,
+     tan,
+     mouseX,
+      mouseY
+      console.log(regresarJson().x);
+      function regresarJson(){
+        return {
+          'x':1,
+          'y':2
+        }
+      }
+
+pintar();
+     document.addEventListener("12312312",(e)=>{
+     var tecla=String.fromCharCode(e.keyCode).toLowerCase();
+     if(tecla=='a'){
+       x-=2;
+     }else if(tecla=='d'){
+       x+=2;
+     }else if(tecla=='w'){
+        y-=2;
+     }else if(tecla=='s'){
+        y+=2;
+     }
+     pintar();
+
+     });
+function pintar(){
+  ctx.clearRect(0,0,ancho,alto);
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.rotate(-tan);
+  ctx.fillRect(-15,-15,30,30);
+  ctx.restore();
+  restore();
+}
+
+function restore(){
+
+    ctx.beginPath();
+    ctx.moveTo(x,y);
+
+    mxs=Math.max(mouseX,x)-Math.min(mouseX,x),
+    mys=Math.max(mouseY,y)-Math.min(mouseY,y)
+    if(mouseX<x) mxs*=-1;
+    if(mouseY>y)   mys*=-1;
+    var pendiente=mys/mxs;
+    tan=Math.atan(pendiente);
+
+
+    var posY=Math.sin(-tan)*25;
+    var posX=Math.cos(-tan)*25;
+
+    var mostrar="";
+    if(mouseY>y&&posY<0 || mouseY<y&&posY>0){
+       mostrar+=posY+"___";
+     posY*=-1;
+
+   }
+    var posX=Math.cos(-tan)*25
+    if(mouseX>x&&posX<0||mouseX<x&&posX>0){
+    mostrar+=posX;
+     posX*=-1;
+
+   }
+
+   mostrar+="<br>"+posY+"-------------"+posX;
+
+    var xi=x+posX;
+    var yi=y+posY;
+    mostrar+="<br>"+xi+"___"+yi;
+    ctx.lineTo(xi,yi);
+    ctx.stroke();
+}
+
+     canvas.addEventListener("mousemove",(e)=>{
+       datos.innerHTML=e.clientX+"____"+e.clientY;
+        mouseX=e.clientX,
+        mouseY =e.clientY,
+        mxs=Math.max(mouseX,x)-Math.min(mouseX,x),
+        mys=Math.max(mouseY,y)-Math.min(mouseY,y)
+        if(mouseX<x) mxs*=-1;
+        if(mouseY>y){
+          mys*=-1;
+          ang=180;
+        }
+      /*  x = x * Math.sin(angR);
+        y = y * Math.cos(angR);*/
+        var pendiente=mys/mxs;
+        tan=Math.atan(pendiente);
+        ang+=tan*180/Math.PI;
+        if(ang<0) ang+=180
+        var angR=ang*Math.PI / 180;
+
+        pintar();
+      //  angR += 1 * Math.PI / 180;
+      //  xi += 1 * Math.sin(anR);
+      //  yi -= 1 * Math.cos(anR);
+      /* var mouseX=e.clientX,
+        mouseY=e.clientY,
+       mxs=Math.max(mouseX,x)-Math.min(mouseX,x),
+       mys=Math.max(mouseY,y)-Math.min(mouseY,y),
+        ang=0
+       if(mouseX<x) mxs*=-1;
+       if(mouseY>y){
+         mys*=-1;
+         ang=180;
+       }
+       var pendiente=mys/mxs;
+       var tan=Math.atan(pendiente);
+       ang+=tan*180/Math.PI;
+       if(ang<0) ang+=180
+
+       datos.innerHTML=(ang*Math.PI / 180)+"<br>";
+       ctx.beginPath();
+       ctx.moveTo(x,y);
+       ctx.lineTo(mouseX,mouseY);
+       ctx.stroke();
+    datos.innerHTML+=ang;
+    */
+
+     });
+      </script>
+  </body>
+  </html>
