@@ -23,15 +23,7 @@ class Login{
                 this.mapa.tanque.pintarTanque(data['usuarios'][i]);
               }
             }
-            for (var i in data['disparos']) {
-              if(data['disparos'][i].id==this.socket.id){
-                  this.mapa.tanque.pintarDisparo(data['disparos'][i],'black');
-              }else{
-                    this.mapa.tanque.pintarDisparo(data['disparos'][i],'red');
-                    data['disparos'][i].i=i;
-                    this.interceptarBala(data['disparos'][i]);
-              }
-            }
+            this.objeto.putImageData(data['disparos'],0,0,this.ancho,this.alto);
           }
         }
 
@@ -82,12 +74,12 @@ class Login{
      }
 
        interceptarBala(data){
-         var datosBala=this.objeto.getImageData(this.mapa.tanque.controles.xi-this.mapa.tanque.controles.boxChoque,this.mapa.tanque.controles.yi-this.mapa.tanque.controles.boxChoque,this.mapa.tanque.controles.boxChoque*2,this.mapa.tanque.controles.boxChoque*2).data;
-         for (var i = 0; i < datosBala.length;i+=4) {
-           if(datosBala[i]==255&&
-             datosBala[i+1]==0&&
-             datosBala[i+2]==0&&
-             datosBala[i+3]==255){
+         var datosPixelesTanque=this.objeto.getImageData(this.mapa.tanque.controles.xi-this.mapa.tanque.controles.boxChoque,this.mapa.tanque.controles.yi-this.mapa.tanque.controles.boxChoque,this.mapa.tanque.controles.boxChoque*2,this.mapa.tanque.controles.boxChoque*2).data;
+         for (var i = 0; i < datosPixelesTanque.length;i+=4) {
+           if(datosPixelesTanque[i]==255&&
+             datosPixelesTanque[i+1]==0&&
+             datosPixelesTanque[i+2]==0&&
+             datosPixelesTanque[i+3]==255){
              this.ponerLogin(data);
              break;
            }

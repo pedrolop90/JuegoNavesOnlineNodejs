@@ -5,12 +5,19 @@ exports.eventos=function(http){
   posiciones={};
   disparos=[];
   pixelesMapa=null;
-  
+  ancho=1200;
+  alto=637;
+    createCanvas = require('canvas')
+ canvas =new createCanvas(1200,637)
+ ctx = canvas.getContext('2d')
+ ctx.fillStyle="black";
+
   max=0;
   setInterval(()=>{
+    ctx.clearRect(0,0,ancho,alto);
     for (var i = 0; i < usuarios.length; i++) {
       if(posiciones[usuarios[i].id]!=null){
-        usuarios[i].emit("recibirDatos",{'usuarios':posiciones,'disparos':disparos});
+        usuarios[i].emit("recibirDatos",{'usuarios':posiciones,'disparos':ctx.getImageData(0,0,ancho,alto)});
       }
     }
     for (var i = 0; i < disparos.length; i++) {
@@ -18,12 +25,13 @@ exports.eventos=function(http){
        disparos[i]=calcularPosicion(disparos[i]);
       if(!pixelesMapa[Math.round(disparos[i].yi+disparos[i].posY)][Math.round(disparos[i].xi+disparos[i].posX)]
       || disparos[i].muerto){
-      /*  disparos[i].yi=disparos[i].yi+disparos[i].posY;
-        disparos[i].xi=disparos[i].xi+disparos[i].posX;
-        disparos[i].angulo=disparos[i].angulo-(45*Math.PI/180);
-        disparos[i].aumentador=1;
-        */
         disparos.splice(i,1);
+      }else{
+        ctx.save();
+        ctx.translate(disparos[i].xi+disparos[i].posX,disparos[i].yi+disparos[i].posY);
+        ctx.rotate(disparos[i].angulo);
+        ctx.fillRect(10/-2,10/-2,10,10);
+        ctx.restore();
       }
     }
   },20);
@@ -57,7 +65,9 @@ exports.eventos=function(http){
       }
     });
     socket.on("mapaPixeles",(data)=>{
-      pixelesMapa=data;
+      if(pixelesMapa==null){
+        pixelesMapa=data;
+      }
     });
     socket.on('disconnect', function(){
           console.log('desconectado ' +socket.id);

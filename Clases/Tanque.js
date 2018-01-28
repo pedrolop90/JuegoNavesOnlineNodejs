@@ -25,7 +25,6 @@ class Tanque{
     this.objeto.fillText(data.nombre,data.xi-10,data.yi);
   }
 
-
   pintarCanon(data){
     this.objeto.strokeStyle=this.colorTanque;
     this.objeto.lineWidth ="10";
@@ -39,15 +38,12 @@ class Tanque{
      this.objeto.stroke();
   }
    pintarDisparo(data,color){
-    this.objeto.beginPath();
     this.objeto.fillStyle=color;
    this.objeto.save();
    this.objeto.translate(data.xi+data.posX,data.yi+data.posY);
    this.objeto.rotate(data.angulo);
    this.objeto.fillRect(10/-2,10/-2,10,10);
    this.objeto.restore();
-    //this.objeto.arc(data.xi+posX,data.yi+posY,this.tamBala,0,2*Math.PI);
-    this.objeto.fill();
   }
   calcularAngulo(){
     var  mxs=Math.max( this.mouseX,this.controles.xi)-Math.min( this.mouseX,this.controles.xi),
