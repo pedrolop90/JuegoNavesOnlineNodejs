@@ -13,7 +13,6 @@ results
 
 node_modules
 npm-debug.log
-package-lock.json
 prueba_canvas.js
 canvas2.html
 .gitignore
