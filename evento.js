@@ -5,19 +5,21 @@ exports.eventos=function(http){
   posiciones={};
   disparos=[];
   pixelesMapa=null;
+  const jsdom = require("jsdom");
+  const   { JSDOM } = jsdom;
+  const dom = new JSDOM(`<!DOCTYPE html>`);
+   canvas=dom.window.document.createElement("canvas");
+  canvas.width=1200;
+  canvas.width=637;
   ancho=1200;
   alto=637;
-    createCanvas = require('canvas')
- canvas =new createCanvas(1200,637)
- ctx = canvas.getContext('2d')
- ctx.fillStyle="black";
+  var objeto=canvas.getContext("2d");
+  objeto.fillStyle="black";
 
-  max=0;
   setInterval(()=>{
-    ctx.clearRect(0,0,ancho,alto);
     for (var i = 0; i < usuarios.length; i++) {
       if(posiciones[usuarios[i].id]!=null){
-        usuarios[i].emit("recibirDatos",{'usuarios':posiciones,'disparos':ctx.getImageData(0,0,ancho,alto)});
+        usuarios[i].emit("recibirDatos",{'usuarios':posiciones,'disparos':disparos});
       }
     }
     for (var i = 0; i < disparos.length; i++) {
@@ -26,12 +28,6 @@ exports.eventos=function(http){
       if(!pixelesMapa[Math.round(disparos[i].yi+disparos[i].posY)][Math.round(disparos[i].xi+disparos[i].posX)]
       || disparos[i].muerto){
         disparos.splice(i,1);
-      }else{
-        ctx.save();
-        ctx.translate(disparos[i].xi+disparos[i].posX,disparos[i].yi+disparos[i].posY);
-        ctx.rotate(disparos[i].angulo);
-        ctx.fillRect(10/-2,10/-2,10,10);
-        ctx.restore();
       }
     }
   },20);

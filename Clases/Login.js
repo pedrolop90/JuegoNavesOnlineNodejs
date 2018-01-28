@@ -23,7 +23,15 @@ class Login{
                 this.mapa.tanque.pintarTanque(data['usuarios'][i]);
               }
             }
-            this.objeto.putImageData(data['disparos'],0,0,this.ancho,this.alto);
+            for (var i = 0; i < data["disparos"].length; i++) {
+              if(data["disparos"][i].id==this.socket.id){
+                this.mapa.tanque.pintarDisparo(data["disparos"][i],"black");
+              }else{
+                  this.mapa.tanque.pintarDisparo(data["disparos"][i],"red");
+                  data["disparos"][i].i=i;
+                  this.interceptarBala(data["disparos"][i]);
+              }
+            }
           }
         }
 
