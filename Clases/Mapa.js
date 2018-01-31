@@ -22,7 +22,11 @@ class Mapa{
         'nombre':this.nombre,
         'angulo':this.tanque.calcularAngulo(),
         'mouseX':this.tanque.mouseX,
-        'mouseY':this.tanque.mouseY
+        'mouseY':this.tanque.mouseY,
+        "tamX":this.tanque.tamX,
+        "tamY":this.tanque.tamY,
+        "color":this.tanque.colorTanque,
+        "tamCanon":this.tanque.tamCanon
       });
     }
 
@@ -40,6 +44,7 @@ class Mapa{
         'maximo':this.ancho,
         'aumentador':30,
         'muerto':false,
+        "tamBala":this.tanque.tamBala,
         'id':this.socket.id
       });
         this.tanque.ultimDisparo=time;
@@ -73,7 +78,6 @@ class Mapa{
         }
         this.pixelesMapa[contY][contX]=pixel;
       }
-      this.socket.emit("mapaPixeles",this.pixelesMapa);
     }
   }
 }

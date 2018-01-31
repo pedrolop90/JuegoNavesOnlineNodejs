@@ -4,28 +4,30 @@ exports.eventos=function(http){
   usuarios=[];
   posiciones={};
   disparos=[];
-  pixelesMapa=null;
-  const jsdom = require("jsdom");
-  const   { JSDOM } = jsdom;
-  const dom = new JSDOM(`<!DOCTYPE html>`);
-   canvas=dom.window.document.createElement("canvas");
-  canvas.width=1200;
-  canvas.width=637;
-  ancho=1200;
-  alto=637;
-  var objeto=canvas.getContext("2d");
-  objeto.fillStyle="black";
+  claseMapa= require("./mapa1.js").mapa;
+  mapa=new claseMapa();
+  claseBoss= require("./Boss.js").boss;
+  boss=new claseBoss(mapa.pixelesMapa);
+
+    setInterval( ()=>{
+      boss.calcularPosiciones(1)
+    } ,10);
+
 
   setInterval(()=>{
+    var disparoBoss=boss.disparo();
+    if(disparoBoss!=null&&usuarios.length>0&&posiciones[usuarios[0].id]!=null){
+        disparos.push(disparoBoss);
+    }
     for (var i = 0; i < usuarios.length; i++) {
       if(posiciones[usuarios[i].id]!=null){
-        usuarios[i].emit("recibirDatos",{'usuarios':posiciones,'disparos':disparos});
+        usuarios[i].emit("recibirDatos",{'usuarios':posiciones,'disparos':disparos,"boss":boss.posicionActual()});
       }
     }
     for (var i = 0; i < disparos.length; i++) {
        disparos[i].aumentador+=10;
        disparos[i]=calcularPosicion(disparos[i]);
-      if(!pixelesMapa[Math.round(disparos[i].yi+disparos[i].posY)][Math.round(disparos[i].xi+disparos[i].posX)]
+      if(!mapa.pixelesMapa[Math.round(disparos[i].yi+disparos[i].posY)][Math.round(disparos[i].xi+disparos[i].posX)]
       || disparos[i].muerto){
         disparos.splice(i,1);
       }
@@ -33,7 +35,7 @@ exports.eventos=function(http){
   },20);
 
   function calcularPosicion(data){
-    var posY=Math.sin( data.angulo)* data.aumentador;
+    var posY=Math.sin( data.angulo)*data.aumentador;
     var posX=Math.cos( data.angulo)*data.aumentador;
    if( data.mouseY> data.yi&&posY<0 ||  data.mouseY< data.yi&&posY>0)posY*=-1;
    if(  data.mouseX> data.xi&&posX<0 ||  data.mouseX< data.xi&&posX>0)posX*=-1;
@@ -49,20 +51,16 @@ exports.eventos=function(http){
      posiciones[socket.id]=null;
     socket.on("enviarDatos",(data)=>{
       posiciones[socket.id]=data;
+      boss.calcularDatosBoss(data,mapa.pixelesMapa);
     });
     socket.on('disparo',(data)=>{
       disparos.push(data);
     })
     socket.on('muerto',(data)=>{
       posiciones[socket.id]=null;
-      if(data!=null){
+      posiciones[socket.id]=null;
+      if(data!=null&&typeof disparos[data.i] !="undefined"){
         disparos[data.i].muerto=true;
-        posiciones[socket.id]=null;
-      }
-    });
-    socket.on("mapaPixeles",(data)=>{
-      if(pixelesMapa==null){
-        pixelesMapa=data;
       }
     });
     socket.on('disconnect', function(){

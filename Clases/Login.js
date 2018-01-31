@@ -18,6 +18,8 @@ class Login{
         pintar(data){
           if(this.mapa!=null){
             this.mapa.pintarMapa();
+            var puntos={};
+            var menor=100000;
             for (var i in data['usuarios']) {
               if(data['usuarios'][i]!=null){
                 this.mapa.tanque.pintarTanque(data['usuarios'][i]);
@@ -32,6 +34,7 @@ class Login{
                   this.interceptarBala(data["disparos"][i]);
               }
             }
+            this.mapa.tanque.pintarTanque(data.boss);
           }
         }
 

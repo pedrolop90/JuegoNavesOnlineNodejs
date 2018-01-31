@@ -9,4 +9,6 @@ alto=637;
 var objeto=canvas.getContext("2d");
 objeto.fillStyle="yellow";
 objeto.fillRect(0,0,ancho,alto);
-console.log(objeto.getImageData(0,0,ancho,alto));
+//console.log(objeto.getImageData(0,0,ancho,alto));
+var num=require('os').cpus().length;
+console.log(num);

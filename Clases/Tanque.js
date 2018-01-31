@@ -14,11 +14,12 @@ class Tanque{
     this.controles=new Controles(10,ancho,alto,this.tamX,this.tamY);
   }
    pintarTanque(data){
-    this.objeto.fillStyle=this.colorTanque;
+    this.objeto.fillStyle=data.color;
     this.objeto.save();
     this.objeto.translate(data.xi,data.yi);
     this.objeto.rotate(data.angulo);
-    this.objeto.fillRect(this.tamX/-2,this.tamY/-2,this.tamX,this.tamY);
+    this.objeto.fillRect(data.tamX/-2,data.tamY/-2,data.tamX,data.tamY);
+    this.objeto.fill();
     this.objeto.restore();
     this.pintarCanon(data);
     this.objeto.fillStyle="yellow";
@@ -26,7 +27,7 @@ class Tanque{
   }
 
   pintarCanon(data){
-    this.objeto.strokeStyle=this.colorTanque;
+    this.objeto.strokeStyle=data.color;
     this.objeto.lineWidth ="10";
     this.objeto.beginPath();
     this.objeto.moveTo(data.xi,data.yi);
@@ -37,8 +38,8 @@ class Tanque{
      this.objeto.lineTo(data.xi+posX,data.yi+posY);
      this.objeto.stroke();
   }
-   pintarDisparo(data,color){
-    this.objeto.fillStyle=color;
+  pintarDisparo(data,color){
+  this.objeto.fillStyle=color;
    this.objeto.save();
    this.objeto.translate(data.xi+data.posX,data.yi+data.posY);
    this.objeto.rotate(data.angulo);
