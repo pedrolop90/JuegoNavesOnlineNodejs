@@ -3,7 +3,7 @@ class Juego{
   constructor(){
     this.ancho=1200;
     this.alto=637;
-    this.socket=io();
+    this.socket=io("http://35.232.134.204:8080");
     this.contenedor=document.querySelector("#canvas");
     this.login=document.querySelector("#login");
     this.objeto=this.contenedor.getContext("2d");

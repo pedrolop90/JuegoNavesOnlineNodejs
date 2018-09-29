@@ -16,3 +16,4 @@ npm-debug.log
 prueba_canvas
 canvas2
 .gitignore
+/nbproject/private/
